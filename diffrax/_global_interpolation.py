@@ -592,7 +592,7 @@ def rectilinear_interpolation(
         are something we are free to pick.
     """
 
-    ts = _check_ts(ts)
+    #ts = _check_ts(ts)
     new_ts = jnp.repeat(ts, 2, axis=0)[1:]
     if replace_nans_at_start is None:
         fn = ft.partial(_rectilinear_interpolation, None)
