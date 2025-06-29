@@ -446,7 +446,7 @@ def loop(
                 return (
                     keep_step
                     & (ts[_save_state.saveat_ts_index] <= state.tnext)
-                    & (_save_state.saveat_ts_index < len(ts))
+                    & (_save_state.saveat_ts_index < jnp.sum(ts <= t1))
                 )
 
             def _body_fun(_save_state):
@@ -1164,11 +1164,11 @@ def diffeqsolve(
             ts[1:] < ts[:-1],
             "saveat.ts must be increasing or decreasing.",
         )
-        ts = eqxi.error_if(
-            ts,
-            (ts > t1) | (ts < t0),
-            "saveat.ts must lie between t0 and t1.",
-        )
+        # ts = eqxi.error_if(
+        #     ts,
+        #     (ts > t1) | (ts < t0),
+        #     "saveat.ts must lie between t0 and t1.",
+        # )
         return ts
 
     saveat = eqx.tree_at(_get_subsaveat_ts, saveat, replace_fn=_check_subsaveat_ts)
